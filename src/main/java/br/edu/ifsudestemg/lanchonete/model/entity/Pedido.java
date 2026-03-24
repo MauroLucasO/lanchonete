@@ -11,27 +11,18 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Produto {
+public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
 
-    private String nome;
-
-    private Float valor;
-
-    private String descricao;
-
-    private Long idCategoria;
+    private Float valorTotal;
 
     @ManyToOne
-    private Categoria categoria;
+    private Cliente cliente;
 
     @ManyToOne
     private Estabelecimento estabelecimento;
-
-    @ManyToOne
-    private ItemPedido itemPedido;
 }

@@ -11,28 +11,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Proprietario {
+public class Proprietario extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private Long id;
-
-    private String nome;
-
-    private String cpf;
-
-    private String telefone;
-
-    private String cep;
-
-    private String cidade;
-
-    private String estado;
-
-    private String logradouro;
-
-    private String email;
-
-    private String senha;
+    @ManyToOne
+    private Estabelecimento estabelecimento;
 }

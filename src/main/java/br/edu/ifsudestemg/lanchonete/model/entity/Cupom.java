@@ -23,5 +23,8 @@ public class Cupom {
 
     private String nome;
 
-    private String estabelecimento;
+    private String IDestabelecimento;
+
+    @ManyToOne
+    private Estabelecimento estabelecimento;
 }

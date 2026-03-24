@@ -11,22 +11,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Cliente {
+public class Cliente extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String nome;
-    private String cpf;
-    private String telefone;
-    private String cep;
-    private String cidade;
-    private String estado;
-    private String logradouro;
-    private String email;
-    private String senha;
-
-    @Transient
-    private String senhaRepeticao;
 }

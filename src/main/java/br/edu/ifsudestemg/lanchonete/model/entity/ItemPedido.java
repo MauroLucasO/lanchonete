@@ -22,5 +22,8 @@ public class ItemPedido {
 
     private Integer quantidade;
 
-    private Double valorTotal;
+    private Float valorTotal;
+
+    @ManyToOne
+    private Pedido pedido;
 }

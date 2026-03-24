@@ -10,28 +10,28 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@MappedSuperclass
 
-public class Produto {
+public abstract class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long id;
-
     private String nome;
 
-    private Float valor;
+    private String cpf;
 
-    private String descricao;
+    private String telefone;
 
-    private Long idCategoria;
+    private String cep;
 
-    @ManyToOne
-    private Categoria categoria;
+    private String cidade;
 
-    @ManyToOne
-    private Estabelecimento estabelecimento;
+    private String estado;
 
-    @ManyToOne
-    private ItemPedido itemPedido;
+    private String logradouro;
+
+    private String email;
+
+    private String senha;
 }

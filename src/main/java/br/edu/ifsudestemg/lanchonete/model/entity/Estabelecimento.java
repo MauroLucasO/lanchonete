@@ -29,4 +29,7 @@ public abstract class Estabelecimento {
     private String logradouro;
 
     private String pontoDeReferencia;
+
+    @ManyToOne
+    private Proprietario proprietario;
 }
