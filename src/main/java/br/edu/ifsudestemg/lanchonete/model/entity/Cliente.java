@@ -13,4 +13,6 @@ import javax.persistence.*;
 
 public class Cliente extends Usuario {
 
+    @ManyToOne
+    private Estabelecimento estabelecimento;
 }

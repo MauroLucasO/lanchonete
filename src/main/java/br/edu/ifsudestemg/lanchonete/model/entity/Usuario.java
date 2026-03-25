@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
 
 public abstract class Usuario {
 
