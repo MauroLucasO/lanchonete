@@ -34,4 +34,8 @@ public class Produto {
 
     @ManyToOne
     private ItemPedido itemPedido;
+
+    @ManyToOne
+    private Estoque estoque;
+
 }

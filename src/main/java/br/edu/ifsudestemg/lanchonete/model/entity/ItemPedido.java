@@ -18,12 +18,13 @@ public class ItemPedido {
 
     private Long id;
 
-    private String nome;
-
     private Integer quantidade;
 
-    private Float valorTotal;
+    private Float valorParcial;
 
     @ManyToOne
     private Pedido pedido;
+
+    @ManyToOne
+    private Produto produto;
 }

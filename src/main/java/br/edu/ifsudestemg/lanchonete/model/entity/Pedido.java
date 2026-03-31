@@ -25,4 +25,7 @@ public class Pedido {
 
     @ManyToOne
     private Estabelecimento estabelecimento;
+
+    @ManyToOne
+    private ItemPedido ItemPedido;
 }

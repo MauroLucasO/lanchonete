@@ -18,7 +18,8 @@ public class Estoque {
 
     private Long id;
 
-    private String nome;
-
     private Integer quantidade;
+
+    @ManyToOne
+    private Produto produto;
 }
