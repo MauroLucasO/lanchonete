@@ -1,10 +1,13 @@
 package br.edu.ifsudestemg.lanchonete.service;
 
+import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
 import br.edu.ifsudestemg.lanchonete.model.entity.Categoria;
 import br.edu.ifsudestemg.lanchonete.model.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,5 +25,23 @@ public class CategoriaService {
 
     public Optional<Categoria> getCategoriaById(Long id) {
         return repository.findById(id);
+    }
+
+    @Transactional
+    public Categoria salvar(Categoria categoria) {
+        validar(categoria);
+        return repository.save(categoria);
+    }
+
+    @Transactional
+    public void excluir(Categoria categoria) {
+        Objects.requireNonNull(categoria.getId());
+        repository.delete(categoria);
+    }
+
+    public void validar(Categoria categoria) {
+        if (categoria.getNome() == null || categoria.getNome().trim().equals("")) {
+            throw new RegraNegocioException("Nome inválido");
+        }
     }
 }

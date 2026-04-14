@@ -14,7 +14,7 @@ public class CupomDto {
 
     private Long id;
     private Double desconto;
-    private String duracao;
+    private Double duracao;
     private String nome;
     private Long idEstabelecimento;
 

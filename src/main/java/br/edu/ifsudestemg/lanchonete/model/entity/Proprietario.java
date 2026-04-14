@@ -13,6 +13,9 @@ import javax.persistence.*;
 
 public class Proprietario extends Usuario {
 
+    private Long id;
+
     @ManyToOne
     private Estabelecimento estabelecimento;
+
 }
