@@ -16,7 +16,7 @@ public class CupomDto {
     private Double desconto;
     private Double duracao;
     private String nome;
-    private Long idEstabelecimento;
+    private Long IDEstabelecimento;
 
     public static CupomDto create(Cupom cupom) {
         ModelMapper modelMapper = new ModelMapper();

@@ -25,10 +25,13 @@ public class PedidoDto {
     public static PedidoDto create(Pedido pedido) {
         ModelMapper modelMapper = new ModelMapper();
         PedidoDto dto = modelMapper.map(pedido, PedidoDto.class);
-        dto.nomeCliente = pedido.getCliente().getNome();
-        dto.logradouro = pedido.getCliente().getLogradouro();
-        dto.telefone = pedido.getCliente().getTelefone();
-        dto.valorParcial = pedido.getItemPedido().getValorParcial();
+
+        if (pedido.getCliente() != null) {
+            dto.nomeCliente = pedido.getCliente().getNome();
+            dto.logradouro = pedido.getCliente().getLogradouro();
+            dto.telefone = pedido.getCliente().getTelefone();
+        }
+
         return dto;
     }
 }

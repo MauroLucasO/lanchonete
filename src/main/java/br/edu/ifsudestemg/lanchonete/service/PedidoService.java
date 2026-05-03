@@ -37,9 +37,6 @@ public class PedidoService {
         repository.delete(pedido);
     }
     public void validar(Pedido pedido) {
-        if (pedido.getItemPedido() == null) {
-            throw new RegraNegocioException("Pedido inválido");
-        }
         if (pedido.getValorTotal() == null || pedido.getValorTotal() == 0) {
             throw new RegraNegocioException("Valor Total inválido");
         }

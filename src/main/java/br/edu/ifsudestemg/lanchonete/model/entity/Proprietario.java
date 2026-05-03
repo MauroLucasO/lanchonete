@@ -8,14 +8,9 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 
 public class Proprietario extends Usuario {
 
-    private Long id;
-
-    @ManyToOne
-    private Estabelecimento estabelecimento;
 
 }

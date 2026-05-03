@@ -13,8 +13,6 @@ import javax.persistence.*;
 
 public class Gerente extends Usuario {
 
-    private Long id;
-
     @ManyToOne
     private Estabelecimento estabelecimento;
 

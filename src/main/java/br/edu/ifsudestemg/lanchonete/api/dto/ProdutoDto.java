@@ -26,8 +26,15 @@ public class ProdutoDto {
     public static ProdutoDto create(Produto produto) {
         ModelMapper modelMapper = new ModelMapper();
         ProdutoDto dto = modelMapper.map(produto, ProdutoDto.class);
-        dto.quantidade = produto.getEstoque().getQuantidade();
-        dto.nomeCategoria = produto.getCategoria().getNome();
+
+        if (produto.getEstoque() != null) {
+            dto.quantidade = produto.getEstoque().getQuantidade();
+        }
+
+        if (produto.getCategoria() != null) {
+            dto.nomeCategoria = produto.getCategoria().getNome();
+        }
+
         return dto;
     }
 }

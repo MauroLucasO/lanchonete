@@ -21,7 +21,11 @@ public class EstabelecimentoDto {
     public static EstabelecimentoDto create(Estabelecimento estabelecimento) {
         ModelMapper modelMapper = new ModelMapper();
         EstabelecimentoDto dto = modelMapper.map(estabelecimento, EstabelecimentoDto.class);
-        dto.nomeProprietario = estabelecimento.getProprietario().getNome();
+
+        if (estabelecimento.getProprietario() != null) {
+            dto.nomeProprietario = estabelecimento.getProprietario().getNome();
+        }
+
         return dto;
     }
 }

@@ -20,7 +20,11 @@ public class EstoqueDto {
     public static EstoqueDto create(Estoque estoque) {
         ModelMapper modelMapper = new ModelMapper();
         EstoqueDto dto = modelMapper.map(estoque, EstoqueDto.class);
-        dto.nomeProduto = estoque.getProduto().getNome();
+
+        if (estoque.getProduto() != null) {
+            dto.nomeProduto = estoque.getProduto().getNome();
+        }
+
         return dto;
     }
 }
