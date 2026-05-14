@@ -36,4 +36,36 @@ public class ItemPedidoController {
         }
         return ResponseEntity.ok(itemPedido.map(ItemPedidoDto::create));
     }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody ItemPedidoDto dto) {
+        try {
+            ItemPedido itemPedido = converter(dto);
+            itemPedido = service.salvar(itemPedido);
+            return new ResponseEntity(itemPedido, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody ItemPedidoDto dto) {
+        if (!service.getItemPedidoById(id).isPresent()) {
+            return new ResponseEntity("Item não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            ItemPedido itemPedido = converter(dto);
+            itemPedido.setId(id);
+            service.salvar(itemPedido);
+            return ResponseEntity.ok(itemPedido);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    public ItemPedido converter(ItemPedidoDto dto) {
+        ModelMapper modelMapper = new ModelMapper();
+        ItemPedido itemPedido = modelMapper.map(dto, ItemPedido.class);
+        return itemPedido;
+    }
 }

@@ -15,6 +15,11 @@ public class EstabelecimentoDto {
 
     private Long id;
     private String nome;
+    private String cnpj;
+    private String telefone;
+    private String cidade;
+    private String logradouro;
+    private String pontoDeReferencia;
     private Long idProprietario;
     private String nomeProprietario;
 

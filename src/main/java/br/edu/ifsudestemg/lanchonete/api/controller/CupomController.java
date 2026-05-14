@@ -5,6 +5,7 @@ import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
 import br.edu.ifsudestemg.lanchonete.model.entity.Cupom;
 import br.edu.ifsudestemg.lanchonete.service.CupomService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +35,37 @@ public class CupomController {
             return new ResponseEntity("Cupom não encontrado", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(cupom.map(CupomDto::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody CupomDto dto) {
+        try {
+            Cupom cupom = converter(dto);
+            cupom = service.salvar(cupom);
+            return new ResponseEntity(cupom, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody CupomDto dto) {
+        if (!service.getCupomById(id).isPresent()) {
+            return new ResponseEntity("Cupom não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Cupom cupom = converter(dto);
+            cupom.setId(id);
+            service.salvar(cupom);
+            return ResponseEntity.ok(cupom);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    public Cupom converter(CupomDto dto) {
+        ModelMapper modelMapper = new ModelMapper();
+        Cupom cupom = modelMapper.map(dto, Cupom.class);
+        return cupom;
     }
 }

@@ -27,10 +27,6 @@ public class ProdutoDto {
         ModelMapper modelMapper = new ModelMapper();
         ProdutoDto dto = modelMapper.map(produto, ProdutoDto.class);
 
-        if (produto.getEstoque() != null) {
-            dto.quantidade = produto.getEstoque().getQuantidade();
-        }
-
         if (produto.getCategoria() != null) {
             dto.nomeCategoria = produto.getCategoria().getNome();
         }

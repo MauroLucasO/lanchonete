@@ -1,7 +1,9 @@
 package br.edu.ifsudestemg.lanchonete.api.controller;
 
+import br.edu.ifsudestemg.lanchonete.api.dto.CategoriaDto;
 import br.edu.ifsudestemg.lanchonete.api.dto.ClienteDto;
 import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
+import br.edu.ifsudestemg.lanchonete.model.entity.Categoria;
 import br.edu.ifsudestemg.lanchonete.model.entity.Cliente;
 import br.edu.ifsudestemg.lanchonete.service.ClienteService;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +37,37 @@ public class ClienteController {
             return new ResponseEntity("Cliente não encontrado", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(cliente.map(ClienteDto::create));
+    }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody ClienteDto dto) {
+        try {
+            Cliente cliente = converter(dto);
+            cliente = service.salvar(cliente);
+            return new ResponseEntity(cliente, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody ClienteDto dto) {
+        if (!service.getClienteById(id).isPresent()) {
+            return new ResponseEntity("Cliente não encontrado(a)", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Cliente cliente = converter(dto);
+            cliente.setId(id);
+            service.salvar(cliente);
+            return ResponseEntity.ok(cliente);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    public Cliente converter(ClienteDto dto) {
+        ModelMapper modelMapper = new ModelMapper();
+        Cliente cliente = modelMapper.map(dto, Cliente.class);
+        return cliente;
     }
 }

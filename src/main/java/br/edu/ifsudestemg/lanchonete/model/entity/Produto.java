@@ -24,8 +24,6 @@ public class Produto {
 
     private String descricao;
 
-    private Long idCategoria;
-
     @ManyToOne
     private Categoria categoria;
 
@@ -35,7 +33,5 @@ public class Produto {
     @ManyToOne
     private ItemPedido itemPedido;
 
-    @ManyToOne
-    private Estoque estoque;
 
 }

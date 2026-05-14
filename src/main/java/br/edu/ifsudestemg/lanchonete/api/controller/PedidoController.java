@@ -36,4 +36,36 @@ public class PedidoController {
         }
         return ResponseEntity.ok(pedido.map(PedidoDto::create));
     }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody PedidoDto dto) {
+        try {
+            Pedido pedido = converter(dto);
+            pedido = service.salvar(pedido);
+            return new ResponseEntity(pedido, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody PedidoDto dto) {
+        if (!service.getPedidoById(id).isPresent()) {
+            return new ResponseEntity("Pedido não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Pedido pedido = converter(dto);
+            pedido.setId(id);
+            service.salvar(pedido);
+            return ResponseEntity.ok(pedido);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    public Pedido converter(PedidoDto dto) {
+        ModelMapper modelMapper = new ModelMapper();
+        Pedido pedido = modelMapper.map(dto, Pedido.class);
+        return pedido;
+    }
 }

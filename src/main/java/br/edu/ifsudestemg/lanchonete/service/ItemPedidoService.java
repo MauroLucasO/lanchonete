@@ -39,10 +39,10 @@ public class ItemPedidoService {
     }
     public void validar(ItemPedido itemPedido) {
         if (itemPedido.getQuantidade() == null || itemPedido.getQuantidade() == 0) {
-            throw new RegraNegocioException("Matrícula inválida");
+            throw new RegraNegocioException("Quantidade inválida");
         }
         if (itemPedido.getValorParcial() == null || itemPedido.getValorParcial() == 0) {
-            throw new RegraNegocioException("Valor Total inválido");
+            throw new RegraNegocioException("Valor Parcial inválido");
         }
         if (itemPedido.getProduto() == null) {
             throw new RegraNegocioException("Produto inválido");

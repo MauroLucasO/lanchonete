@@ -36,4 +36,37 @@ public class CategoriaController {
         }
         return ResponseEntity.ok(categoria.map(CategoriaDto::create));
     }
+
+    @PostMapping()
+    public ResponseEntity post(@RequestBody CategoriaDto dto) {
+        try {
+            Categoria categoria = converter(dto);
+            categoria = service.salvar(categoria);
+            return new ResponseEntity(categoria, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody CategoriaDto dto) {
+        if (!service.getCategoriaById(id).isPresent()) {
+            return new ResponseEntity("Categoria não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Categoria categoria = converter(dto);
+            categoria.setId(id);
+            service.salvar(categoria);
+            return ResponseEntity.ok(categoria);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    public Categoria converter(CategoriaDto dto) {
+        ModelMapper modelMapper = new ModelMapper();
+        Categoria categoria = modelMapper.map(dto, Categoria.class);
+        return categoria;
+    }
+
 }
