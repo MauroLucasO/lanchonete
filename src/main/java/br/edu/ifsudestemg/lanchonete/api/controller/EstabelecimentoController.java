@@ -63,6 +63,24 @@ public class EstabelecimentoController {
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+
+        Optional<Estabelecimento> estabelecimento = service.getEstabelecimentoById(id);
+
+        if (!estabelecimento.isPresent()) {
+            return new ResponseEntity("Estabelecimento não encontrado", HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            service.excluir(estabelecimento.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Estabelecimento converter(EstabelecimentoDto dto) {
         ModelMapper modelMapper = new ModelMapper();
         Estabelecimento estabelecimento = modelMapper.map(dto, Estabelecimento.class);

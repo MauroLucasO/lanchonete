@@ -63,6 +63,24 @@ public class PedidoController {
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+
+        Optional<Pedido> pedido = service.getPedidoById(id);
+
+        if (!pedido.isPresent()) {
+            return new ResponseEntity("Pedido não encontrado", HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            service.excluir(pedido.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Pedido converter(PedidoDto dto) {
         ModelMapper modelMapper = new ModelMapper();
         Pedido pedido = modelMapper.map(dto, Pedido.class);

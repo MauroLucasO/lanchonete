@@ -65,6 +65,24 @@ public class ProprietarioController {
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+
+        Optional<Proprietario> proprietario = service.getProprietarioById(id);
+
+        if (!proprietario.isPresent()) {
+            return new ResponseEntity("Proprietário não encontrado", HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            service.excluir(proprietario.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Proprietario converter(ProprietarioDto dto) {
         ModelMapper modelMapper = new ModelMapper();
         Proprietario proprietario = modelMapper.map(dto, Proprietario.class);

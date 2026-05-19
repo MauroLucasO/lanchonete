@@ -63,6 +63,24 @@ public class GerenteController {
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+
+        Optional<Gerente> gerente = service.getGerenteById(id);
+
+        if (!gerente.isPresent()) {
+            return new ResponseEntity("Gerente não encontrado(a)", HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            service.excluir(gerente.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Gerente converter(GerenteDto dto) {
         ModelMapper modelMapper = new ModelMapper();
         Gerente gerente = modelMapper.map(dto, Gerente.class);

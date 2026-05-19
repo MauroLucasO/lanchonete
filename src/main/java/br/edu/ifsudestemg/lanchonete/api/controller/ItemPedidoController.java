@@ -63,6 +63,24 @@ public class ItemPedidoController {
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+
+        Optional<ItemPedido> itemPedido = service.getItemPedidoById(id);
+
+        if (!itemPedido.isPresent()) {
+            return new ResponseEntity("Item não encontrado", HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            service.excluir(itemPedido.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public ItemPedido converter(ItemPedidoDto dto) {
         ModelMapper modelMapper = new ModelMapper();
         ItemPedido itemPedido = modelMapper.map(dto, ItemPedido.class);

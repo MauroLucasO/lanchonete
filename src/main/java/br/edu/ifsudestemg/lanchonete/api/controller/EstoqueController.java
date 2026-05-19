@@ -65,6 +65,24 @@ public class EstoqueController {
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+
+        Optional<Estoque> estoque = service.getEstoqueById(id);
+
+        if (!estoque.isPresent()) {
+            return new ResponseEntity("Estoque não encontrado", HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            service.excluir(estoque.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Estoque converter(EstoqueDto dto) {
         ModelMapper modelMapper = new ModelMapper();
         Estoque estoque = modelMapper.map(dto, Estoque.class);
