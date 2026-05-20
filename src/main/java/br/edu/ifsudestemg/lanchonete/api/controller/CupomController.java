@@ -4,6 +4,7 @@ import br.edu.ifsudestemg.lanchonete.api.dto.CupomDto;
 import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
 import br.edu.ifsudestemg.lanchonete.model.entity.Cupom;
 import br.edu.ifsudestemg.lanchonete.service.CupomService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -17,19 +18,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/cupons")
 @RequiredArgsConstructor
+@Api("API de Cupons")
 @CrossOrigin
 public class CupomController {
 
     private final CupomService service;
 
     @GetMapping()
+    @ApiOperation("Obter detalhes de todos os cupons")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cupons encontrados"),
+            @ApiResponse(code = 404, message = "Cupons não encontrados")
+    })
     public ResponseEntity get() {
         List<Cupom> cupons = service.getCupons();
         return ResponseEntity.ok(cupons.stream().map(CupomDto::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @ApiOperation("Obter detalhes de um cupom")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cupom encontrado"),
+            @ApiResponse(code = 404, message = "Cupom não encontrado")
+    })
+    public ResponseEntity get(@PathVariable("id") @ApiParam("Id do cupom") Long id) {
         Optional<Cupom> cupom = service.getCupomById(id);
         if (!cupom.isPresent()) {
             return new ResponseEntity("Cupom não encontrado", HttpStatus.NOT_FOUND);
@@ -38,6 +50,11 @@ public class CupomController {
     }
 
     @PostMapping()
+    @ApiOperation("Inserir novo cupom")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cupom inserido"),
+            @ApiResponse(code = 404, message = "Cupom não inserido")
+    })
     public ResponseEntity post(@RequestBody CupomDto dto) {
         try {
             Cupom cupom = converter(dto);
@@ -49,7 +66,12 @@ public class CupomController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody CupomDto dto) {
+    @ApiOperation("Atualizar detalhes de um cupom")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cupom atualizado"),
+            @ApiResponse(code = 404, message = "Cupom não encontrado")
+    })
+    public ResponseEntity put(@PathVariable("id") @ApiParam("Id do cupom") Long id, @RequestBody CupomDto dto) {
         if (!service.getCupomById(id).isPresent()) {
             return new ResponseEntity("Cupom não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +86,12 @@ public class CupomController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @ApiOperation("Excluir um cupom")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cupom excluído"),
+            @ApiResponse(code = 404, message = "Cupom não encontrado")
+    })
+    public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id do cupom") Long id) {
 
         Optional<Cupom> cupom = service.getCupomById(id);
 

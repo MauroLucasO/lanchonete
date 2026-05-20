@@ -6,6 +6,7 @@ import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
 import br.edu.ifsudestemg.lanchonete.model.entity.Categoria;
 import br.edu.ifsudestemg.lanchonete.model.entity.Cliente;
 import br.edu.ifsudestemg.lanchonete.service.ClienteService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -19,19 +20,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/clientes")
 @RequiredArgsConstructor
+@Api("API de Clientes")
 @CrossOrigin
 public class ClienteController {
 
     private final ClienteService service;
 
     @GetMapping()
+    @ApiOperation("Obter detalhes de todos os clientes")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Clientes encontrados"),
+            @ApiResponse(code = 404, message = "Clientes não encontrados")
+    })
     public ResponseEntity get() {
         List<Cliente> clientes = service.getClientes();
         return ResponseEntity.ok(clientes.stream().map(ClienteDto::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @ApiOperation("Obter detalhes de um cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente encontrado"),
+            @ApiResponse(code = 404, message = "Cliente não encontrado")
+    })
+    public ResponseEntity get(@PathVariable("id") @ApiParam("Id do cliente") Long id) {
         Optional<Cliente> cliente = service.getClienteById(id);
         if (!cliente.isPresent()) {
             return new ResponseEntity("Cliente não encontrado", HttpStatus.NOT_FOUND);
@@ -40,6 +52,11 @@ public class ClienteController {
     }
 
     @PostMapping()
+    @ApiOperation("Inserir novo cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente inserido"),
+            @ApiResponse(code = 404, message = "Cliente não inserido")
+    })
     public ResponseEntity post(@RequestBody ClienteDto dto) {
         try {
             Cliente cliente = converter(dto);
@@ -51,9 +68,14 @@ public class ClienteController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody ClienteDto dto) {
+    @ApiOperation("Atualizar detalhes de um cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente atualizado"),
+            @ApiResponse(code = 404, message = "Cliente não encontrado")
+    })
+    public ResponseEntity put(@PathVariable("id") @ApiParam("Id do cliente") Long id, @RequestBody ClienteDto dto) {
         if (!service.getClienteById(id).isPresent()) {
-            return new ResponseEntity("Cliente não encontrado(a)", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Cliente não encontrado", HttpStatus.NOT_FOUND);
         }
         try {
             Cliente cliente = converter(dto);
@@ -66,7 +88,12 @@ public class ClienteController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @ApiOperation("Excluir um cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente excluído"),
+            @ApiResponse(code = 404, message = "Cliente não encontrado")
+    })
+    public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id do cliente") Long id) {
 
         Optional<Cliente> cliente = service.getClienteById(id);
 

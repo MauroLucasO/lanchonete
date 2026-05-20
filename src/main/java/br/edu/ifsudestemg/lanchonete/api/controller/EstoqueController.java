@@ -6,6 +6,7 @@ import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
 import br.edu.ifsudestemg.lanchonete.model.entity.Categoria;
 import br.edu.ifsudestemg.lanchonete.model.entity.Estoque;
 import br.edu.ifsudestemg.lanchonete.service.EstoqueService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -19,19 +20,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/estoques")
 @RequiredArgsConstructor
+@Api("API de Estoques")
 @CrossOrigin
 public class EstoqueController {
 
     private final EstoqueService service;
 
     @GetMapping()
+    @ApiOperation("Obter detalhes de todos os estoques")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Estoques encontrados"),
+            @ApiResponse(code = 404, message = "Estoques não encontrados")
+    })
     public ResponseEntity get() {
         List<Estoque> estoques = service.getEstoques();
         return ResponseEntity.ok(estoques.stream().map(EstoqueDto::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @ApiOperation("Obter detalhes de um estoque")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Estoque encontrado"),
+            @ApiResponse(code = 404, message = "Estoque não encontrado")
+    })
+    public ResponseEntity get(@PathVariable("id") @ApiParam("Id do estoque") Long id) {
         Optional<Estoque> estoque = service.getEstoqueById(id);
         if (!estoque.isPresent()) {
             return new ResponseEntity("Estoque não encontrado", HttpStatus.NOT_FOUND);
@@ -40,6 +52,11 @@ public class EstoqueController {
     }
 
     @PostMapping()
+    @ApiOperation("Inserir novo estoque")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Estoque inserido"),
+            @ApiResponse(code = 404, message = "Estoque não inserido")
+    })
     public ResponseEntity post(@RequestBody EstoqueDto dto) {
         try {
             Estoque estoque = converter(dto);
@@ -51,7 +68,12 @@ public class EstoqueController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody EstoqueDto dto) {
+    @ApiOperation("Atualizar detalhes de um estoque")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Estoque atualizado"),
+            @ApiResponse(code = 404, message = "Estoque não encontrado")
+    })
+    public ResponseEntity put(@PathVariable("id") @ApiParam("Id do estoque") Long id, @RequestBody EstoqueDto dto) {
         if (!service.getEstoqueById(id).isPresent()) {
             return new ResponseEntity("Estoque não encontrado", HttpStatus.NOT_FOUND);
         }
@@ -66,7 +88,12 @@ public class EstoqueController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @ApiOperation("Excluir um estoque")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Estoque excluído"),
+            @ApiResponse(code = 404, message = "Estoque não encontrado")
+    })
+    public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id do estoque") Long id) {
 
         Optional<Estoque> estoque = service.getEstoqueById(id);
 

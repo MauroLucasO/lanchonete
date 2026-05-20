@@ -4,6 +4,7 @@ import br.edu.ifsudestemg.lanchonete.api.dto.CategoriaDto;
 import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
 import br.edu.ifsudestemg.lanchonete.model.entity.Categoria;
 import br.edu.ifsudestemg.lanchonete.service.CategoriaService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -17,19 +18,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/categorias")
 @RequiredArgsConstructor
+@Api("API de Categorias")
 @CrossOrigin
 public class CategoriaController {
 
     private final CategoriaService service;
 
     @GetMapping()
+    @ApiOperation("Obter detalhes de todas as categorias")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Categorias encontradas"),
+            @ApiResponse(code = 404, message = "Categorias não encontradas")
+    })
     public ResponseEntity get() {
         List<Categoria> categorias = service.getCategorias();
         return ResponseEntity.ok(categorias.stream().map(CategoriaDto::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @ApiOperation("Obter detalhes de uma categoria")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Categoria encontrada"),
+            @ApiResponse(code = 404, message = "Categoria não encontrada")
+    })
+    public ResponseEntity get(@PathVariable("id") @ApiParam("Id da categoria") Long id) {
         Optional<Categoria> categoria = service.getCategoriaById(id);
         if (!categoria.isPresent()) {
             return new ResponseEntity("Categoria não encontrada", HttpStatus.NOT_FOUND);
@@ -38,6 +50,11 @@ public class CategoriaController {
     }
 
     @PostMapping()
+    @ApiOperation("Inserir nova categoria")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Categoria inserida"),
+            @ApiResponse(code = 404, message = "Categoria não inserida")
+    })
     public ResponseEntity post(@RequestBody CategoriaDto dto) {
         try {
             Categoria categoria = converter(dto);
@@ -49,7 +66,12 @@ public class CategoriaController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody CategoriaDto dto) {
+    @ApiOperation("Atualizar detalhes de uma categoria")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Categoria atualizada"),
+            @ApiResponse(code = 404, message = "Categoria não encontrada")
+    })
+    public ResponseEntity put(@PathVariable("id") @ApiParam("Id da categoria") Long id, @RequestBody CategoriaDto dto) {
         if (!service.getCategoriaById(id).isPresent()) {
             return new ResponseEntity("Categoria não encontrada", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +86,12 @@ public class CategoriaController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @ApiOperation("Excluir uma categoria")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Categoria excluída"),
+            @ApiResponse(code = 404, message = "Categoria não encontrada")
+    })
+    public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id da categoria") Long id) {
 
         Optional<Categoria> categoria = service.getCategoriaById(id);
 

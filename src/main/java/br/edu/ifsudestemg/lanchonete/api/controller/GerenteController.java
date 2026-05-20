@@ -4,6 +4,7 @@ import br.edu.ifsudestemg.lanchonete.api.dto.GerenteDto;
 import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
 import br.edu.ifsudestemg.lanchonete.model.entity.Gerente;
 import br.edu.ifsudestemg.lanchonete.service.GerenteService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -17,19 +18,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/gerentes")
 @RequiredArgsConstructor
+@Api("API de Gerentes")
 @CrossOrigin
 public class GerenteController {
 
     private final GerenteService service;
 
     @GetMapping()
+    @ApiOperation("Obter detalhes de todos os gerentes")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Gerentes encontrados"),
+            @ApiResponse(code = 404, message = "Gerentes não encontrados")
+    })
     public ResponseEntity get() {
         List<Gerente> gerentes = service.getGerentes();
         return ResponseEntity.ok(gerentes.stream().map(GerenteDto::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @ApiOperation("Obter detalhes de um gerente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Gerente encontrado"),
+            @ApiResponse(code = 404, message = "Gerente não encontrado")
+    })
+    public ResponseEntity get(@PathVariable("id") @ApiParam("Id do gerente") Long id) {
         Optional<Gerente> gerente = service.getGerenteById(id);
         if (!gerente.isPresent()) {
             return new ResponseEntity("Gerente não encontrado(a)", HttpStatus.NOT_FOUND);
@@ -38,6 +50,11 @@ public class GerenteController {
     }
 
     @PostMapping()
+    @ApiOperation("Inserir novo gerente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Gerente inserido"),
+            @ApiResponse(code = 404, message = "Gerente não inserido")
+    })
     public ResponseEntity post(@RequestBody GerenteDto dto) {
         try {
             Gerente gerente = converter(dto);
@@ -49,7 +66,12 @@ public class GerenteController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody GerenteDto dto) {
+    @ApiOperation("Atualizar detalhes de um gerente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Gerente atualizado"),
+            @ApiResponse(code = 404, message = "Gerente não encontrado")
+    })
+    public ResponseEntity put(@PathVariable("id") @ApiParam("Id do gerente") Long id, @RequestBody GerenteDto dto) {
         if (!service.getGerenteById(id).isPresent()) {
             return new ResponseEntity("Gerente não encontrado(a)", HttpStatus.NOT_FOUND);
         }
@@ -64,7 +86,12 @@ public class GerenteController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @ApiOperation("Excluir um gerente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Gerente excluído"),
+            @ApiResponse(code = 404, message = "Gerente não encontrado")
+    })
+    public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id do gerente") Long id) {
 
         Optional<Gerente> gerente = service.getGerenteById(id);
 

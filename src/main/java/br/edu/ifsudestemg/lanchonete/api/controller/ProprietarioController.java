@@ -6,6 +6,7 @@ import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
 import br.edu.ifsudestemg.lanchonete.model.entity.Categoria;
 import br.edu.ifsudestemg.lanchonete.model.entity.Proprietario;
 import br.edu.ifsudestemg.lanchonete.service.ProprietarioService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -19,19 +20,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/proprietarios")
 @RequiredArgsConstructor
+@Api("API de Proprietários")
 @CrossOrigin
 public class ProprietarioController {
 
     private final ProprietarioService service;
 
     @GetMapping()
+    @ApiOperation("Obter detalhes de todos os proprietários")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Proprietários encontrados"),
+            @ApiResponse(code = 404, message = "Proprietários não encontrados")
+    })
     public ResponseEntity get() {
         List<Proprietario> proprietarios = service.getProprietarios();
         return ResponseEntity.ok(proprietarios.stream().map(ProprietarioDto::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    @ApiOperation("Obter detalhes de um proprietário")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Proprietário encontrado"),
+            @ApiResponse(code = 404, message = "Proprietário não encontrado")
+    })
+    public ResponseEntity get(@PathVariable("id") @ApiParam("Id do proprietário") Long id) {
         Optional<Proprietario> proprietario = service.getProprietarioById(id);
         if (!proprietario.isPresent()) {
             return new ResponseEntity("Proprietário não encontrado", HttpStatus.NOT_FOUND);
@@ -40,6 +52,11 @@ public class ProprietarioController {
     }
 
     @PostMapping()
+    @ApiOperation("Inserir novo proprietário")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Proprietário inserido"),
+            @ApiResponse(code = 404, message = "Proprietário não inserido")
+    })
     public ResponseEntity post(@RequestBody ProprietarioDto dto) {
         try {
             Proprietario proprietario = converter(dto);
@@ -51,7 +68,12 @@ public class ProprietarioController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody ProprietarioDto dto) {
+    @ApiOperation("Atualizar detalhes de um proprietário")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Proprietário atualizado"),
+            @ApiResponse(code = 404, message = "Proprietário não encontrado")
+    })
+    public ResponseEntity put(@PathVariable("id") @ApiParam("Id do proprietário") Long id, @RequestBody ProprietarioDto dto) {
         if (!service.getProprietarioById(id).isPresent()) {
             return new ResponseEntity("Proprietário(a) não encontrado(a)", HttpStatus.NOT_FOUND);
         }
@@ -66,7 +88,12 @@ public class ProprietarioController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @ApiOperation("Excluir um proprietário")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Proprietário excluído"),
+            @ApiResponse(code = 404, message = "Proprietário não encontrado")
+    })
+    public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id do proprietário") Long id) {
 
         Optional<Proprietario> proprietario = service.getProprietarioById(id);
 
