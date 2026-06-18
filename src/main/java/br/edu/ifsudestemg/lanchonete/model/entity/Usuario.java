@@ -1,21 +1,24 @@
 package br.edu.ifsudestemg.lanchonete.model.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@MappedSuperclass
+@Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
-public abstract class Usuario {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String login;
 
     private String nome;
 
@@ -34,4 +37,6 @@ public abstract class Usuario {
     private String email;
 
     private String senha;
+
+    private boolean admin;
 }
