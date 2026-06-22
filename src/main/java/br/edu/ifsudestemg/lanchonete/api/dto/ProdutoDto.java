@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 
 public class ProdutoDto {
 
-    private Long id;
     private String nome;
     private Float valor;
     private String descricao;

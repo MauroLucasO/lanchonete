@@ -1,4 +1,4 @@
-package br.edu.ifsudestemg.lanchonete.api.config;
+package br.edu.ifsudestemg.lanchonete.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

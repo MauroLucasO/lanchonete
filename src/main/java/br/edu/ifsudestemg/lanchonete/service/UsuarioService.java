@@ -57,8 +57,15 @@ public class UsuarioService implements UserDetailsService {
         Usuario usuario = repository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        return User
-                .builder()
+        if (usuario.isAdmin()) {
+            return User.builder()
+                    .username(usuario.getLogin())
+                    .password(usuario.getSenha())
+                    .roles("ADMIN")
+                    .build();
+        }
+
+        return User.builder()
                 .username(usuario.getLogin())
                 .password(usuario.getSenha())
                 .roles("USER")

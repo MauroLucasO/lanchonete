@@ -12,11 +12,10 @@ import org.modelmapper.ModelMapper;
 
 public class CupomDto {
 
-    private Long id;
     private Double desconto;
     private Double duracao;
     private String nome;
-    private Long IDEstabelecimento;
+    private Long idEstabelecimento;
 
     public static CupomDto create(Cupom cupom) {
         ModelMapper modelMapper = new ModelMapper();

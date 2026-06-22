@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 
 public class ItemPedidoDto {
 
-    private Long id;
     private Integer quantidade;
     private Float valorParcial;
     private Long idProduto;

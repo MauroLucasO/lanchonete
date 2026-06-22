@@ -1,4 +1,4 @@
-package br.edu.ifsudestemg.lanchonete.api.config;
+package br.edu.ifsudestemg.lanchonete.config;
 
 import br.edu.ifsudestemg.lanchonete.security.JwtAuthFilter;
 import br.edu.ifsudestemg.lanchonete.security.JwtService;
@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configure(http))
                 .cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
@@ -55,19 +56,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
 
                 .antMatchers("/api/v1/clientes/**")
-                .permitAll()
+                .hasRole("ADMIN")
 
                 .antMatchers("/api/v1/produtos/**")
                 .permitAll()
 
                 .antMatchers("/api/v1/categorias/**")
-                .permitAll()
+                .hasRole("ADMIN")
 
                 .antMatchers("/api/v1/cupons/**")
-                .permitAll()
+                .hasRole("ADMIN")
 
                 .antMatchers("/api/v1/pedidos/**")
-                .authenticated()
+                .hasRole("ADMIN")
+
+                .antMatchers("/api/v1/estabelecimentos/**")
+                .hasRole("ADMIN")
+
+                .antMatchers("/api/v1/gerentes/**")
+                .hasRole("ADMIN")
+
+                .antMatchers("/api/v1/estoques/**")
+                .hasRole("ADMIN")
+
+                .antMatchers("/api/v1/itenspedidos/**")
+                .hasRole("ADMIN")
+
+                .antMatchers("/api/v1/proprietarios/**")
+                .hasRole("ADMIN")
 
                 .anyRequest()
                 .authenticated()

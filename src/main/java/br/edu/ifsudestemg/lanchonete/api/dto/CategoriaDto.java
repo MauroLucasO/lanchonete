@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 
 public class CategoriaDto {
 
-    private Long id;
     private String nome;
 
     public static CategoriaDto create(Categoria categoria) {

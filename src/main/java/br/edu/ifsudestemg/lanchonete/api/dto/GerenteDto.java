@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 
 public class GerenteDto {
 
-    private Long id;
     private String nome;
     private String cpf;
     private String telefone;
@@ -20,6 +19,7 @@ public class GerenteDto {
     private String cidade;
     private String estado;
     private String logradouro;
+    private String login;
     private String email;
     private String senha;
     private Long idEstabelecimento;
