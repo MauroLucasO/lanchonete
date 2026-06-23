@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 
 public class ClienteDto {
 
+    private Long id;
     private String nome;
     private String cpf;
     private String telefone;

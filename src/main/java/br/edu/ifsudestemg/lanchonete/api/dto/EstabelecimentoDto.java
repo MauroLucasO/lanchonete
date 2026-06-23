@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 
 public class EstabelecimentoDto {
 
+    private Long id;
     private String nome;
     private String cnpj;
     private String telefone;

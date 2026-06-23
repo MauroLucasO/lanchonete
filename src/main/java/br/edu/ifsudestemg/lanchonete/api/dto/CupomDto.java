@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 
 public class CupomDto {
 
+    private Long id;
     private Double desconto;
     private Double duracao;
     private String nome;

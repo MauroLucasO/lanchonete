@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 
 public class EstoqueDto {
 
+    private Long id;
     private Integer quantidade;
     private Long idProduto;
     private String nomeProduto;
