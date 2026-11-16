@@ -1,6 +1,5 @@
 package br.edu.ifsudestemg.lanchonete.api.dto;
 
-import br.edu.ifsudestemg.lanchonete.model.entity.Categoria;
 import br.edu.ifsudestemg.lanchonete.model.entity.Estabelecimento;
 import lombok.AllArgsConstructor;
 import lombok.Data;

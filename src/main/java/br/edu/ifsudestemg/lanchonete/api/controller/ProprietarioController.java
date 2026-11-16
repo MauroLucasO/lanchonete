@@ -1,9 +1,7 @@
 package br.edu.ifsudestemg.lanchonete.api.controller;
 
-import br.edu.ifsudestemg.lanchonete.api.dto.CategoriaDto;
 import br.edu.ifsudestemg.lanchonete.api.dto.ProprietarioDto;
 import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
-import br.edu.ifsudestemg.lanchonete.model.entity.Categoria;
 import br.edu.ifsudestemg.lanchonete.model.entity.Proprietario;
 import br.edu.ifsudestemg.lanchonete.service.ProprietarioService;
 import io.swagger.annotations.*;

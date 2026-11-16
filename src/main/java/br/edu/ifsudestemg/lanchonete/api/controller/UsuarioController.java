@@ -1,6 +1,8 @@
 package br.edu.ifsudestemg.lanchonete.api.controller;
 
-import br.edu.ifsudestemg.lanchonete.api.dto.*;
+import br.edu.ifsudestemg.lanchonete.api.dto.CredenciaisDTO;
+import br.edu.ifsudestemg.lanchonete.api.dto.TokenDTO;
+import br.edu.ifsudestemg.lanchonete.api.dto.UsuarioDTO;
 import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
 import br.edu.ifsudestemg.lanchonete.exception.SenhaInvalidaException;
 import br.edu.ifsudestemg.lanchonete.model.entity.Usuario;

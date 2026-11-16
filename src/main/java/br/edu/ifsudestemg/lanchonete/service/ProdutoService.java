@@ -1,7 +1,6 @@
 package br.edu.ifsudestemg.lanchonete.service;
 
 import br.edu.ifsudestemg.lanchonete.exception.RegraNegocioException;
-import br.edu.ifsudestemg.lanchonete.model.entity.ItemPedido;
 import br.edu.ifsudestemg.lanchonete.model.entity.Produto;
 import br.edu.ifsudestemg.lanchonete.model.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
