@@ -26,6 +26,7 @@ public class ProdutoService {
     public Optional<Produto> getProdutoById(Long id) {
         return repository.findById(id);
     }
+
     @Transactional
     public Produto salvar(Produto produto) {
         validar(produto);
@@ -37,15 +38,19 @@ public class ProdutoService {
         Objects.requireNonNull(produto.getId());
         repository.delete(produto);
     }
+
     public void validar(Produto produto) {
-        if (produto.getNome() == null) {
-            throw new RegraNegocioException("Nome inválida");
+        if (produto == null) {
+            throw new RegraNegocioException("Produto inválido");
         }
-        if (produto.getValor() == null || produto.getNome().trim().equals("")) {
+        if (produto.getNome() == null || produto.getNome().trim().equals("") || produto.getNome().trim().length() < 2) {
+            throw new RegraNegocioException("Nome inválido");
+        }
+        if (produto.getValor() == null || produto.getValor().doubleValue() <= 0 || produto.getValor().doubleValue() > 10000) {
             throw new RegraNegocioException("Valor inválido");
         }
-        if (produto.getDescricao() == null) {
-            throw new RegraNegocioException("Descrição inválido");
+        if (produto.getDescricao() == null || produto.getDescricao().trim().equals("") || produto.getDescricao().trim().length() < 5) {
+            throw new RegraNegocioException("Descrição inválida");
         }
     }
 }

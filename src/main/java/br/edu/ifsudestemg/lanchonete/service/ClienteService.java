@@ -40,13 +40,16 @@ public class ClienteService {
     }
 
     public void validar(Cliente cliente) {
-        if (cliente.getNome() == null || cliente.getNome().trim().equals("")) {
+        if (cliente == null) {
+            throw new RegraNegocioException("Cliente inválido");
+        }
+        if (cliente.getNome() == null || cliente.getNome().trim().equals("") || cliente.getNome().trim().length() < 3) {
             throw new RegraNegocioException("Nome inválido");
         }
-        if (cliente.getCpf() == null || cliente.getCpf().trim().equals("")) {
+        if (cliente.getCpf() == null || cliente.getCpf().trim().equals("") || cliente.getCpf().trim().length() != 11) {
             throw new RegraNegocioException("CPF inválido");
         }
-        if (cliente.getLogin() == null || cliente.getLogin().trim().equals("")) {
+        if (cliente.getLogin() == null || cliente.getLogin().trim().equals("") || !cliente.getLogin().contains("@") || !cliente.getLogin().contains(".")) {
             throw new RegraNegocioException("Email inválido");
         }
     }
